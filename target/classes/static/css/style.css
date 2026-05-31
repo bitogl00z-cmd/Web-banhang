@@ -1,0 +1,11 @@
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+.product-card { transition: opacity 0.3s ease; }
+.product-card:hover { opacity: 0.85; }
+
+.cluster-card { transition: all 0.4s ease; }
+.cluster-card:hover { transform: translateY(-4px); }
+
+.fade-in { animation: fadeIn 0.6s ease forwards; opacity: 0; }
+@keyframes fadeIn { to { opacity: 1; } }

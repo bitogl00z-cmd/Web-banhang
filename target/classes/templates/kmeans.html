@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="~{layout :: head('Phân tích K-Means - FashionStyle')}"></head>
+<body>
+<div th:replace="~{layout :: navbar}"></div>
+
+<div class="max-w-7xl mx-auto px-6 py-16">
+    <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Phân tích</p>
+    <h1 class="text-3xl font-display font-bold">K-Means Clustering</h1>
+    <p class="text-gray-400 text-sm mt-3">Biểu đồ phân cụm sản phẩm dựa trên đặc trưng (giá, màu sắc, chất liệu)</p>
+
+    <div class="mt-10 bg-white border border-gray-100 p-6">
+        <canvas id="scatterChart" height="120"></canvas>
+    </div>
+
+    <div class="mt-12 bg-white border border-gray-100 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-100 text-[11px] uppercase tracking-widest text-gray-500">
+                    <th class="text-left px-6 py-4 font-medium">Sản phẩm</th>
+                    <th class="text-left px-6 py-4 font-medium">Cụm</th>
+                    <th class="text-left px-6 py-4 font-medium">Giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${result.scatterData}" class="border-b border-gray-50 hover:bg-gray-50/50 transition">
+                    <td class="px-6 py-4 font-medium" th:text="${r.productName}">Name</td>
+                    <td class="px-6 py-4" th:text="${r.clusterName}">Cluster</td>
+                    <td class="px-6 py-4 text-xs" th:text="${r.x}">X</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-12 bg-white border border-gray-100 p-6">
+        <canvas id="featureChart" height="80"></canvas>
+    </div>
+</div>
+
+<script th:utext="'var chartData = ' + ${result.chartJson} + ';'"></script>
+
+<script>
+    const colors = ['#1a1a1a','#B8860B','#4a4a4a','#8B6914','#d4c5a9','#6b6b6b'];
+
+    const scatterSets = {};
+    chartData.points.forEach(p => {
+        if (!scatterSets[p.clusterId]) {
+            scatterSets[p.clusterId] = {label: p.clusterName, data: [], backgroundColor: colors[(p.clusterId-1) % colors.length], borderColor: colors[(p.clusterId-1) % colors.length]};
+        }
+        scatterSets[p.clusterId].data.push({x: p.x, y: p.y});
+    });
+
+    new Chart(document.getElementById('scatterChart'), {
+        type: 'scatter',
+        data: {datasets: Object.values(scatterSets)},
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {position: 'bottom', labels: {font: {size: 11, family: 'Inter'}, boxWidth: 12, padding: 16}},
+                title: {display: true, text: 'Phân bố sản phẩm theo đặc trưng', font: {family: 'Playfair Display', size: 16}, padding: {bottom: 20}}
+            },
+            scales: {
+                x: {title: {display: true, text: 'Giá (chuẩn hoá)', font: {size: 11, family: 'Inter'}}, grid: {color: '#f0f0f0'}},
+                y: {title: {display: true, text: 'Đặc trưng tổng hợp', font: {size: 11, family: 'Inter'}}, grid: {color: '#f0f0f0'}}
+            }
+        }
+    });
+
+    const featureSets = [];
+    Object.entries(chartData.features).forEach(([cid, features], idx) => {
+        featureSets.push({label: chartData.clusterNames[cid], data: Object.values(features), backgroundColor: colors[idx % colors.length], borderRadius: 0});
+    });
+
+    new Chart(document.getElementById('featureChart'), {
+        type: 'bar',
+        data: {
+            labels: chartData.featureNames,
+            datasets: featureSets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {position: 'bottom', labels: {font: {size: 11, family: 'Inter'}, boxWidth: 12, padding: 16}},
+                title: {display: true, text: 'Phân bố đặc trưng theo cụm', font: {family: 'Playfair Display', size: 16}, padding: {bottom: 20}}
+            },
+            scales: {
+                x: {grid: {display: false}, ticks: {font: {size: 10, family: 'Inter'}}},
+                y: {grid: {color: '#f0f0f0'}, ticks: {font: {size: 10, family: 'Inter'}}}
+            }
+        }
+    });
+</script>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

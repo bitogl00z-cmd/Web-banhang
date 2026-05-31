@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{gold:'#B8860B',cream:'#FDFBF7'},fontFamily:{display:['Playfair Display','serif'],sans:['Inter','sans-serif']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="font-sans bg-cream text-gray-900 antialiased">
+<div th:fragment="navbar">
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-20">
+                <a href="/" class="text-2xl font-display font-bold tracking-tight">FASHION<span class="text-gold font-display italic font-normal">Style</span></a>
+                <form action="/search" method="get" class="hidden md:flex items-center border-b border-gray-200 focus-within:border-gold transition">
+                    <input type="text" name="q" placeholder="Tìm kiếm..." class="px-3 py-2 text-sm bg-transparent focus:outline-none w-64">
+                    <button type="submit" class="px-3 text-gray-400 hover:text-gold transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </button>
+                </form>
+                <div class="flex items-center gap-6">
+                    <a href="/kmeans" class="text-xs uppercase tracking-widest text-gray-500 hover:text-gold transition">Phân tích</a>
+                    <a href="/cart" class="relative text-gray-700 hover:text-gold transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                        <span th:if="${session.cartService != null}" class="absolute -top-2 -right-2 bg-gold text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-medium" th:text="${session.cartService.itemCount}">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div th:fragment="footer">
+    <footer class="border-t border-gray-100 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="font-display text-xl">FASHION<span class="text-gold italic">Style</span></p>
+            <p class="text-xs uppercase tracking-[0.2em] text-gray-400 mt-3">Thời trang cho mọi phong cách</p>
+            <p class="text-xs text-gray-300 mt-6">&copy; 2026 FashionStyle</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

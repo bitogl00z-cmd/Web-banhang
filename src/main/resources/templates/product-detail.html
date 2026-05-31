@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="~{layout :: head(${product.name} + ' - FashionStyle')}"></head>
+<body>
+<div th:replace="~{layout :: navbar}"></div>
+
+<div class="max-w-7xl mx-auto px-6 py-16">
+    <a th:href="@{/cluster/{id}(id=${product.clusterId})}" class="text-xs uppercase tracking-widest text-gray-400 hover:text-gold transition">&larr; Quay lại</a>
+
+    <div class="grid md:grid-cols-2 gap-16 mt-8">
+        <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
+            <img th:src="@{'https://picsum.photos/seed/' + ${product.id} + '/800/1000'}" alt="" class="w-full h-full object-cover">
+        </div>
+        <div class="flex flex-col justify-center">
+            <p class="text-[11px] uppercase tracking-[0.2em] text-gold" th:text="${product.genderLabel}"></p>
+            <h1 class="text-3xl font-display font-bold mt-2" th:text="${product.name}">Name</h1>
+            <p class="text-2xl font-medium mt-6" th:text="${product.formattedPrice}">Price</p>
+            <p class="text-xs text-gray-300 mt-2">Danh mục: <span class="text-gray-500" th:text="${product.clusterName}">Cluster</span></p>
+
+            <form action="/cart/add" method="post" class="mt-8">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <div class="flex items-center gap-4 border-b border-gray-100 pb-8">
+                    <label class="text-xs uppercase tracking-widest text-gray-500">Số lượng</label>
+                    <select name="quantity" class="border border-gray-200 px-3 py-2 text-sm bg-transparent focus:outline-none focus:border-gold transition">
+                        <option th:each="i : ${#numbers.sequence(1, 10)}" th:value="${i}" th:text="${i}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="mt-8 w-full bg-gray-900 text-white text-sm uppercase tracking-widest py-4 hover:bg-gold transition">
+                    Thêm vào giỏ hàng
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(related)}" class="mt-24">
+        <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Cùng phong cách</p>
+        <h2 class="text-2xl font-display font-bold">Sản phẩm liên quan</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-10">
+            <div th:each="p : ${related}" class="group cursor-pointer" th:data-url="@{/product/{id}(id=${p.id})}" onclick="window.location=this.dataset.url">
+                <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
+                    <img th:src="@{'https://picsum.photos/seed/' + ${p.id} + '/400/500'}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                </div>
+                <div class="mt-4">
+                    <h3 class="font-medium text-sm" th:text="${p.name}">Name</h3>
+                    <p class="text-sm mt-1 font-medium" th:text="${p.formattedPrice}">Price</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

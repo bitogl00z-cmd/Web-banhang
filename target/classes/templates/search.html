@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="~{layout :: head('Tìm kiếm - FashionStyle')}"></head>
+<body>
+<div th:replace="~{layout :: navbar}"></div>
+
+<div class="max-w-7xl mx-auto px-6 py-16">
+    <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Tìm kiếm</p>
+    <h1 class="text-3xl font-display font-bold">Kết quả tìm kiếm</h1>
+
+    <form action="/search" method="get" class="flex items-center border-b border-gray-200 mt-8 max-w-md">
+        <input type="text" name="q" th:value="${query}" placeholder="Tìm sản phẩm..." class="flex-1 py-3 text-sm bg-transparent focus:outline-none">
+        <button type="submit" class="px-3 text-gray-400 hover:text-gold transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+    </form>
+
+    <p class="text-xs text-gray-400 mt-6" th:if="${query != null}" th:text="${#lists.size(products)} + ' kết quả cho &quot;' + ${query} + '&quot;'"></p>
+    <p class="text-xs text-gray-400 mt-6" th:if="${query == null}">Nhập từ khoá để tìm kiếm</p>
+
+    <div th:if="${#lists.isEmpty(products) and query != null}" class="mt-12 text-center py-20 border border-gray-100">
+        <p class="text-gray-400 text-sm">Không tìm thấy sản phẩm</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-10" th:if="${not #lists.isEmpty(products)}">
+        <div th:each="p : ${products}" class="group cursor-pointer" th:data-url="@{/product/{id}(id=${p.id})}" onclick="window.location=this.dataset.url">
+            <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
+                <img th:src="@{'https://picsum.photos/seed/' + ${p.id} + '/600/800'}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+            </div>
+            <div class="mt-4">
+                <p class="text-[11px] uppercase tracking-[0.2em] text-gray-400" th:text="${p.genderLabel}"></p>
+                <h3 class="font-medium text-sm mt-1" th:text="${p.name}">Name</h3>
+                <p class="text-sm mt-2 font-medium" th:text="${p.formattedPrice}">Price</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>
