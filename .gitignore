@@ -1,0 +1,9 @@
+target/
+*.log
+*.jar
+*.war
+.idea/
+*.iml
+.superpowers/
+app.err
+app.log
