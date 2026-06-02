@@ -12,6 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByClusterId(Integer clusterId, Pageable pageable);
     long countByClusterId(Integer clusterId);
     List<Product> findTop4ByClusterIdAndIdNot(Integer clusterId, Integer excludeId);
+    List<Product> findByClusterIdAndIdNotOrderByIdAsc(Integer clusterId, Integer excludeId);
     List<Product> findByNameContainingIgnoreCase(String keyword);
     Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
 

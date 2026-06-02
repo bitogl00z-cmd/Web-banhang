@@ -33,21 +33,68 @@
     </div>
 
     <div th:if="${not #lists.isEmpty(related)}" class="mt-24">
-        <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Gợi ý phối đồ</p>
-        <h2 class="text-2xl font-display font-bold">Gợi ý phối đồ (K-Means Clustering)</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-10">
-            <div th:each="p : ${related}" class="group cursor-pointer" th:data-url="@{/product/{id}(id=${p.id})}" onclick="window.location=this.dataset.url">
-                <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
-                    <img th:src="@{${p.imageUrl}}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                </div>
-                <div class="mt-4">
-                    <h3 class="font-medium text-sm" th:text="${p.name}">Name</h3>
-                    <p class="text-sm mt-1 font-medium" th:text="${p.formattedPrice}">Price</p>
+        <div class="flex items-end justify-between mb-2">
+            <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Gợi ý phối đồ</p>
+                <h2 class="text-2xl font-display font-bold">Gợi ý phối đồ (K-Means Clustering)</h2>
+            </div>
+            <a th:href="@{/cluster/{id}(id=${product.clusterId})}" class="hidden sm:inline text-xs uppercase tracking-widest text-gray-400 hover:text-gold transition whitespace-nowrap">
+                Xem tất cả <span th:text="${related.size()}"></span> sản phẩm &rarr;
+            </a>
+        </div>
+
+        <div class="relative mt-10">
+            <button type="button" onclick="scrollRelated(-1)" aria-label="Trước"
+                    class="hidden md:flex absolute left-0 top-[28%] -translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white border border-gray-200 rounded-full shadow-lg items-center justify-center hover:bg-gold hover:text-white hover:border-gold transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+
+            <div id="relatedCarousel" class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <div th:each="p : ${related}"
+                     class="related-card flex-shrink-0 w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1.125rem)] snap-start cursor-pointer group/card"
+                     th:data-url="@{/product/{id}(id=${p.id})}"
+                     onclick="window.location=this.dataset.url">
+                    <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
+                        <img th:src="@{${p.imageUrl}}" alt="" class="w-full h-full object-cover group-hover/card:scale-105 transition duration-700">
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="font-medium text-sm" th:text="${p.name}">Name</h3>
+                        <p class="text-sm mt-1 font-medium" th:text="${p.formattedPrice}">Price</p>
+                    </div>
                 </div>
             </div>
+
+            <button type="button" onclick="scrollRelated(1)" aria-label="Sau"
+                    class="hidden md:flex absolute right-0 top-[28%] translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white border border-gray-200 rounded-full shadow-lg items-center justify-center hover:bg-gold hover:text-white hover:border-gold transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
         </div>
     </div>
 </div>
+
+<script>
+function scrollRelated(direction) {
+    const carousel = document.getElementById('relatedCarousel');
+    if (!carousel) return;
+    const item = carousel.querySelector('.related-card');
+    if (!item) return;
+    const gap = 24;
+    const step = item.offsetWidth + gap;
+    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+    const tol = 2;
+    if (direction === 1 && carousel.scrollLeft >= maxScroll - tol) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+    } else if (direction === -1 && carousel.scrollLeft <= tol) {
+        carousel.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    } else {
+        carousel.scrollBy({ left: direction * step, behavior: 'smooth' });
+    }
+}
+</script>
 
 <div th:replace="~{layout :: footer}"></div>
 </body>

@@ -44,7 +44,7 @@ public class ProductController {
     public String detail(@PathVariable int id, Model model) {
         ProductDTO product = productService.getProductDTO(id);
         if (product == null) return "redirect:/";
-        List<ProductDTO> related = productService.getRecommendedProducts(id);
+        List<ProductDTO> related = productService.getAllRelatedProducts(product.getClusterId(), id);
 
         model.addAttribute("product", product);
         model.addAttribute("related", related);
