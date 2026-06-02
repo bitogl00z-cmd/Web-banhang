@@ -45,7 +45,11 @@ public class CartService {
             dto.setProductName(p.getName());
             dto.setPrice(p.getPrice());
             dto.setFormattedPrice(String.format("%,d\u0111", p.getPrice()));
-            dto.setImageUrl(p.getImageUrl());
+            String img = p.getImageUrl();
+            if (img == null || img.isBlank()) {
+                img = "/images/products/" + p.getId() + ".png";
+            }
+            dto.setImageUrl(img);
             dto.setQuantity(entry.getValue());
             return dto;
         }).filter(Objects::nonNull).collect(Collectors.toList());

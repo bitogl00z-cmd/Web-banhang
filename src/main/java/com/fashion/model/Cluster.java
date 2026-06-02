@@ -22,24 +22,22 @@ public class Cluster {
 
     public String getGradient() {
         return switch (id) {
-            case 0 -> "from-green-400 to-blue-500";
-            case 1 -> "from-yellow-400 to-red-500";
-            case 2 -> "from-blue-600 to-indigo-800";
-            case 3 -> "from-pink-300 to-purple-500";
-            case 4 -> "from-gray-100 to-gray-400";
-            case 5 -> "from-teal-300 to-green-400";
+            case 0 -> "from-slate-700 to-slate-900";
+            case 1 -> "from-rose-400 to-pink-600";
+            case 2 -> "from-amber-500 to-orange-700";
+            case 3 -> "from-sky-400 to-blue-600";
+            case 4 -> "from-stone-300 to-stone-500";
             default -> "from-gray-300 to-gray-500";
         };
     }
 
     public String getIcon() {
         return switch (id) {
-            case 0 -> "🏃";
-            case 1 -> "👟";
-            case 2 -> "👔";
-            case 3 -> "👗";
-            case 4 -> "🌸";
-            case 5 -> "🛍️";
+            case 0 -> "👔";
+            case 1 -> "👗";
+            case 2 -> "🎤";
+            case 3 -> "🏃";
+            case 4 -> "🌿";
             default -> "📦";
         };
     }

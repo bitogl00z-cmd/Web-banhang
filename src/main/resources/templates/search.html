@@ -25,7 +25,7 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-10" th:if="${not #lists.isEmpty(products)}">
         <div th:each="p : ${products}" class="group cursor-pointer" th:data-url="@{/product/{id}(id=${p.id})}" onclick="window.location=this.dataset.url">
             <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
-                <img th:src="@{'https://picsum.photos/seed/' + ${p.id} + '/600/800'}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <img th:src="@{${p.imageUrl}}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
             </div>
             <div class="mt-4">
                 <p class="text-[11px] uppercase tracking-[0.2em] text-gray-400" th:text="${p.genderLabel}"></p>

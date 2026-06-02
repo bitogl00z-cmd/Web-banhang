@@ -58,6 +58,11 @@ public class ProductService {
                 .map(this::toDTO).collect(Collectors.toList());
     }
 
+    public List<ProductDTO> getRecommendedProducts(int productId) {
+        return productRepository.findRecommendedProducts(productId).stream()
+                .map(this::toDTO).collect(Collectors.toList());
+    }
+
     public List<ProductDTO> searchProducts(String keyword) {
         return productRepository.findByNameContainingIgnoreCase(keyword).stream()
                 .map(this::toDTO).collect(Collectors.toList());

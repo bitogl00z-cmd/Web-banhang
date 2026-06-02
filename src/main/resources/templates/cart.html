@@ -17,7 +17,7 @@
         <div class="mt-10">
             <div th:each="item : ${cartItems}" class="flex items-center gap-6 py-6 border-b border-gray-50">
                 <div class="w-20 h-24 flex-shrink-0 overflow-hidden">
-                    <img th:src="@{'https://picsum.photos/seed/' + ${item.productId} + '/200/200'}" alt="" class="w-full h-full object-cover">
+                    <img th:src="@{${item.imageUrl}}" alt="" class="w-full h-full object-cover">
                 </div>
                 <div class="flex-1 min-w-0">
                     <h3 class="font-medium text-sm" th:text="${item.productName}">Name</h3>

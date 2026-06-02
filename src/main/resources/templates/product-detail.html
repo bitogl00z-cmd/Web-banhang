@@ -9,7 +9,7 @@
 
     <div class="grid md:grid-cols-2 gap-16 mt-8">
         <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
-            <img th:src="@{'https://picsum.photos/seed/' + ${product.id} + '/800/1000'}" alt="" class="w-full h-full object-cover">
+            <img th:src="@{${product.imageUrl}}" alt="" class="w-full h-full object-cover">
         </div>
         <div class="flex flex-col justify-center">
             <p class="text-[11px] uppercase tracking-[0.2em] text-gold" th:text="${product.genderLabel}"></p>
@@ -33,12 +33,12 @@
     </div>
 
     <div th:if="${not #lists.isEmpty(related)}" class="mt-24">
-        <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Cùng phong cách</p>
-        <h2 class="text-2xl font-display font-bold">Sản phẩm liên quan</h2>
+        <p class="text-xs uppercase tracking-[0.3em] text-gold mb-2">Gợi ý phối đồ</p>
+        <h2 class="text-2xl font-display font-bold">Gợi ý phối đồ (K-Means Clustering)</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-10">
             <div th:each="p : ${related}" class="group cursor-pointer" th:data-url="@{/product/{id}(id=${p.id})}" onclick="window.location=this.dataset.url">
                 <div class="aspect-[3/4] bg-gray-50 overflow-hidden">
-                    <img th:src="@{'https://picsum.photos/seed/' + ${p.id} + '/400/500'}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    <img th:src="@{${p.imageUrl}}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 </div>
                 <div class="mt-4">
                     <h3 class="font-medium text-sm" th:text="${p.name}">Name</h3>
